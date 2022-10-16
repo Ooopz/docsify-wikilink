@@ -21,21 +21,35 @@ add this line of code to Docsify project to install this plugin.
 
 link 2 a file name 'fileName.md' in the same directory.
 
-```
-[[fileName|Show Link]]  
-```
-[[fileName|Show Link]]  
+### direct link
 
 ```
 [[fileName]]
 ```
 [[fileName]]
 
+### link with alias
+
+```
+[[fileName|Show Link]]  
+```
+[[fileName|Show Link]]  
+
+### link with topic
+
+```
+[[fileName#topic2]]
+```
+[[fileName#topic2]]
+
+### link with topic and alias
+
 ```
 [[fileName#topic2| topic2 of FileName]]
 ```
 [[fileName#topic2| topic2 of FileName]]
 
+### link to subPath
 ```
 [[subPath/subPathFile]]
 ```
