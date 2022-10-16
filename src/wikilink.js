@@ -18,24 +18,37 @@ function plugin(hook, vm) {
     for (var i=0; i < list.length; i++) {
       var para = list[i].innerHTML
       const eachParaRes = para.replace(/\[\[([^\[\]]+)\]\]/g, function (content) {
+        // 变量定义 格式为：[[hashPath#topic|showText]]
+        let link = '';
+        let showText = '';
+        let hashPath = '';
+        let topic = '';
+        
+        // get link & showText
         const innerContent = content.replace('[[', '').replace(']]', '')
-        const linkAliasSps = innerContent.split('|') // [link, alias]
-        // [[link|showtext]] = 创建一个链接，指向内部的wiki页面'Link', 链接文字是'click here'.
-        const link = linkAliasSps.length === 2 ? `${linkAliasSps[0].trim()}` : innerContent
-        var hashPath = link
-        var topic = ''
-        var showText = innerContent
-        if (link.indexOf('#') != -1) {
-          const linkTopicSps = link.split('#') // link, topic
-          hashPath = linkTopicSps[0]
-          topic = `?id=${linkTopicSps[1]}`
-          showText = `${linkAliasSps[1].trim()}`
+        if(innerContent.indexOf('|') !== -1) {
+          const linkAliasSps = innerContent.split('|')
+          link = linkAliasSps[0].trim();
+          showText = linkAliasSps[1].trim();
+        } else {
+          link = showText = innerContent.trim();
         }
-        if (showText.split("|").length==2){showText=showText.split("|")[1]}
+
+        // get hashPath & topic        
+        if (link.indexOf('#') !== -1) {
+          const linkTopicSps = link.split('#')
+          hashPath = linkTopicSps[0].trim()
+          topic = `?id=${linkTopicSps[1].trim()}`
+        } else {
+          hashPath = link;
+        }
+
+        // generate <a>
         if (hashPath.indexOf('/') === 0) {
           //absolute path
           return `<a href="#${hashPath}${topic}">${showText}</a>`
         } else {
+          //relative path
           return `<a href="${relativePath}${hashPath}${topic}">${showText}</a>`
         }
       })
